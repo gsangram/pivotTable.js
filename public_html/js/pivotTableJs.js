@@ -97,42 +97,44 @@ $(document).ready(function(){
 //
 //        });
 //        
-        
-        
+      
+//    c6
+//------------------------------------------------------------------------>>
+       
 //        var dateFormat =       $.pivotUtilities.derivers.dateFormat;
 //        var sortAs =           $.pivotUtilities.sortAs;
 //        var tpl =              $.pivotUtilities.aggregatorTemplates;
 //        var fmt =              $.pivotUtilities.numberFormat({suffix: " °C"});
-
+//
 //        Papa.parse("mps.json", {
 //            download: true,
 //            skipEmptyLines: true,
 //            complete: function(parsed){
 //                $.getJSON("mps.json", function(mps) {
-//                $("#output").pivotUI(mps, {
+//                $("#bujji").pivotUI(mps, {
 //                    hiddenAttributes: ["Date","Max Temp (C)","Mean Temp (C)",
 //                        "Min Temp (C)" ,"Total Rain (mm)","Total Snow (cm)"],
-
+//
 //                    derivedAttributes: {
 //                        "month name": dateFormat("Date", "%n", true),
 //                        "day name":   dateFormat("Date", "%w", true)
 //                    },
-
+//
 //                    rows: ["Name"],
 //                    cols: ["Age"],
-
+//
 //                    sorters: {
 //                        "month name": sortAs(["Jan","Feb","Mar","Apr", "May",
 //                                "Jun","Jul","Aug","Sep","Oct","Nov","Dec"]),
 //                        "day name": sortAs(["Mon","Tue","Wed", "Thu","Fri",
 //                                "Sat","Sun"])
 //                    },
-
+//
 //                    aggregators: {
 //                        "Age of the person":
 //                            function() { return tpl.average(fmt)(["Mean Temp (C)"])}                   
 //                    },
-
+//
 //                aggregatorName: "Integer Sum",
 //
 //                    renderers: $.extend(
@@ -153,29 +155,47 @@ $(document).ready(function(){
 //                        }
 //                    }
 //                });
-//            }
-//        });
-    var derivers = $.pivotUtilities.derivers;
-    var renderers = $.extend($.pivotUtilities.renderers,
-            $.pivotUtilities.c3_renderers);
+//            })
+//        }
+//    });
 
-$.getJSON("mps.json", function(mps) {
+//     c7
+//-------------------------------------------------------------------------------->>
+
+//    var derivers = $.pivotUtilities.derivers;
+//    var renderers = $.extend($.pivotUtilities.renderers, $.pivotUtilities.c3_renderers);
+//            
+//$.getJSON("mps.json", function(mps) {
+//            $("#bujji").pivotUI(mps, {
+//                renderers: renderers,
+//                cols: ["Party"], rows: ["Province"],
+//                rendererName: "Bar Chart",
+//                rowOrder: "value_z_to_a", colOrder: "value_z_to_a",
+//                rendererOptions: {
+//                    c3: { data: {colors: {
+//                        Liberal: '#dc3912', Conservative: '#3366cc', NDP: '#ff9900',
+//                        Green:'#109618', 'Bloc Quebecois': '#990099'
+//                    }}}
+//                }
+//            });
+//        });
+
+//      c8
+//-------------------------------------------------------------------------------->>
+
+
+
+var derivers = $.pivotUtilities.derivers;
+        $.getJSON("mps.json", function(mps) {
             $("#bujji").pivotUI(mps, {
-                renderers: renderers,
-                cols: ["Party"], rows: ["Province"],
-                rendererName: "Horizontal Stacked Bar Chart",
-                rowOrder: "value_z_to_a", colOrder: "value_z_to_a",
-                rendererOptions: {
-                    c3: { data: {colors: {
-                        Liberal: '#dc3912', Conservative: '#3366cc', NDP: '#ff9900',
-                        Green:'#109618', 'Bloc Quebecois': '#990099'
-                    }}}
+                derivedAttributes: {
+                    "Age Bin": derivers.bin("Age", 10),
+                    "Gender Imbalance": function(mp) {
+                        console.log("laugh louder",mp);
+                        return mp["Gender"] == "Male" ? "male" : "female";
+                    }
                 }
             });
         });
-
-
-
-
 
 })
